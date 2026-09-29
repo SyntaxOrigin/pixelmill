@@ -1,0 +1,33 @@
+[package]
+name = "pixelmill"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+license = "MIT"
+description = "PNG okuyan/yazan, yeniden boyutlandiran ve hedef bayt icinde kalacak sekilde sikistiran toplu terminal gorsel araci."
+repository = "https://github.com/SyntaxOrigin/pixelmill"
+readme = "README.md"
+keywords = ["png", "resize", "image", "batch", "cli"]
+categories = ["command-line-utilities", "multimedia::images"]
+
+[dependencies]
+# serde: src/rapor.rs icindeki deneme kaydi, hedef sonucu ve dosya raporu yapi
+# tureticileri ile src/kuyruk.rs girdi kaydi JSON olarak serilestiriliyor.
+serde = { version = "1", features = ["derive"] }
+# serde_json: src/main.rs tarafindan uretilen JSON raporunun okunabilir bicimde
+# yazilmasi ve --rapor ile disa aktarilmasi icin gerekli.
+serde_json = "1"
+# clap: src/main.rs icindeki info/convert/resize/optimize/batch alt komutlarinin
+# ve seceneklerinin cozumlenmesi icin arguman ayristirici (bkz. WORKER_CONTRACT 3.2-B).
+clap = { version = "4", features = ["derive"] }
+# flate2: PNG'nin zlib akisi icin gereken DEFLATE inflate/deflate. Backend yalnizca
+# miniz_oxide (saf Rust) olarak secilmistir; zlib/zlib-ng/rust_backend acilmaz, boylece
+# C kutuphanesi baglantisi gelmez (WORKER_CONTRACT 3.2-D, MANIFEST kart 04 / D-008).
+flate2 = { version = "1", default-features = false, features = ["miniz_oxide"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = "debuginfo"

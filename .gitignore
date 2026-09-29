@@ -1,0 +1,10 @@
+/target/
+.env
+*.log
+*.pmtmp
+
+# Editor ve arac dosyalari
+.idea/
+.vscode/
+*.swp
+*.tmp
